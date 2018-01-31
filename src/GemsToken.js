@@ -70,7 +70,7 @@ class GemsToken {
       throw new Error(`Unexpected value: ${log.args.value}`);
     }
 
-    console.log(log);
+    return log;
   }
 
   async transferFrom(from, to, value) {
@@ -97,7 +97,7 @@ class GemsToken {
       throw new Error(`Unexpected value: ${log.args.value}`);
     }
 
-    console.log(log);
+    return log;
   }
 
   async approve(address, value) {
@@ -123,7 +123,7 @@ class GemsToken {
       throw new Error(`Unexpected value: ${log.args.value}`);
     }
 
-    console.log(log);
+    return log;
   }
 }
 

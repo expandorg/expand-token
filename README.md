@@ -9,7 +9,7 @@ Add scripts to the `scripts/` directory, using `scripts/template.js` as a guide:
 ```javascript
 const runScript = require('../src/runScript');
 
-runScript(async (token, ownerAddress) => {
+runScript(async (token, ownerAddress, web3) => {
   // Script here
 })
   .then(() => console.log('done'))
@@ -30,7 +30,7 @@ allowance(owner, spender)
 
 ### Transactions
 
-Transactions log events to the console on success, and log errors on failure.
+Transactions return logged event on success, and throw errors on failure.
 
 ```
 transfer(to, value)
