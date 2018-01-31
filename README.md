@@ -2,7 +2,27 @@
 
 Contains the GemsToken contract and convenience wrappers for executing views and transactions.
 
-## Usage
+## Environments
+
+There are three possible environments, each with their own `.env` file and set using `NODE_ENV`. For example:
+
+```
+NODE_ENV=ropsten npm run migrate --network ropsten
+```
+
+```
+NODE_ENV=ropsten node scripts/foobar.js
+```
+
+```
+NODE_ENV=production npm run migrate --network live
+```
+
+```
+NODE_ENV=production node scripts/foobar.js
+```
+
+## Running Scripts
 
 Add scripts to the `scripts/` directory, using `scripts/template.js` as a guide:
 
