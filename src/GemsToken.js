@@ -66,7 +66,7 @@ class GemsToken {
     if (log.args.to !== to.toLowerCase()) {
       throw new Error(`Unexpected to address: ${log.args.to}`);
     }
-    if (parseInt(log.args.value) !== value) {
+    if (!log.args.value.equals(value)) {
       throw new Error(`Unexpected value: ${log.args.value}`);
     }
 
@@ -93,7 +93,7 @@ class GemsToken {
     if (log.args.to !== to.toLowerCase()) {
       throw new Error(`Unexpected to address: ${log.args.to}`);
     }
-    if (parseInt(log.args.value) !== value) {
+    if (!log.args.value.equals(value)) {
       throw new Error(`Unexpected value: ${log.args.value}`);
     }
 
@@ -119,7 +119,7 @@ class GemsToken {
     if (log.args.spender !== address.toLowerCase()) {
       throw new Error(`Unexpected spender address: ${log.args.spender}`);
     }
-    if (parseInt(log.args.value) !== value) {
+    if (!log.args.value.equals(value)) {
       throw new Error(`Unexpected value: ${log.args.value}`);
     }
 
