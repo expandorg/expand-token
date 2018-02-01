@@ -60,10 +60,10 @@ class GemsToken {
     if (log.event !== 'Transfer') {
       throw new Error(`Unexpected event log: ${log.toString()}`);
     }
-    if (log.args.from !== this.from) {
+    if (log.args.from !== this.from.toLowerCase()) {
       throw new Error(`Unexpected from address: ${log.args.from}`);
     }
-    if (log.args.to !== to) {
+    if (log.args.to !== to.toLowerCase()) {
       throw new Error(`Unexpected to address: ${log.args.to}`);
     }
     if (parseInt(log.args.value) !== value) {
@@ -87,10 +87,10 @@ class GemsToken {
     if (log.event !== 'Transfer') {
       throw new Error(`Unexpected event log: ${log.toString()}`);
     }
-    if (log.args.from !== from) {
+    if (log.args.from !== from.toLowerCase()) {
       throw new Error(`Unexpected from address: ${log.args.from}`);
     }
-    if (log.args.to !== to) {
+    if (log.args.to !== to.toLowerCase()) {
       throw new Error(`Unexpected to address: ${log.args.to}`);
     }
     if (parseInt(log.args.value) !== value) {
@@ -113,10 +113,10 @@ class GemsToken {
     if (log.event !== 'Approval') {
       throw new Error(`Unexpected event log: ${log.toString()}`);
     }
-    if (log.args.owner !== this.from) {
+    if (log.args.owner !== this.from.toLowerCase()) {
       throw new Error(`Unexpected owner address: ${log.args.from}`);
     }
-    if (log.args.spender !== address) {
+    if (log.args.spender !== address.toLowerCase()) {
       throw new Error(`Unexpected spender address: ${log.args.spender}`);
     }
     if (parseInt(log.args.value) !== value) {
