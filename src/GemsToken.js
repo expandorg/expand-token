@@ -27,7 +27,7 @@ class GemsToken {
       gas: process.env.GAS_LIMIT,
       from: this.from,
     });
-    this.token = await tokenContract.deployed();
+    this.token = await tokenContract.at(process.env.GEMS_ADDRESS);
   }
 
   /* Views */
