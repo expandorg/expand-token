@@ -35,14 +35,14 @@ class GemsToken {
   async balanceOf(address) {
     validateAddress(address, 'balance');
 
-    return await this.token.balanceOf.call(address);
+    return this.token.balanceOf.call(address);
   }
 
   async allowance(owner, spender) {
     validateAddress(owner, 'owner');
     validateAddress(spender, 'spender');
 
-    return await this.token.allowance.call(owner, spender);
+    return this.token.allowance.call(owner, spender);
   }
 
   /* Transactions */
