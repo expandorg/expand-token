@@ -26,6 +26,7 @@ class GemsToken {
     tokenContract.defaults({
       gas: process.env.GAS_LIMIT,
       from: this.from,
+      gasPrice: process.env.GAS_PRICE,
     });
     this.token = await tokenContract.at(process.env.GEMS_ADDRESS);
   }
