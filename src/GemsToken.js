@@ -126,6 +126,27 @@ class GemsToken {
 
     return log;
   }
+
+  async reclaimToken(address) {
+    validateAddress(address, 'token');
+
+    const { logs } = await this.token.reclaimToken(address);
+    if (logs.length !== 1) {
+      throw new Error(`Unexpected event logs: ${logs.toString()}`);
+    }
+    const log = logs[0];
+    if (log.event !== 'Transfer') {
+      throw new Error(`Unexpected event log: ${log.toString()}`);
+    }
+    if (log.args.from !== process.env.GEMS_ADDRESS) {
+      throw new Error(`Unexpected from address: ${log.args.from}`);
+    }
+    if (log.args.to !== process.env.OWNER_ADDRESS) {
+      throw new Error(`Unexpected to address: ${log.args.to}`);
+    }
+
+    return log;
+  }
 }
 
 module.exports = GemsToken;
