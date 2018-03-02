@@ -145,6 +145,8 @@ class GemsToken {
       throw new Error(`Unexpected to address: ${log.args.to}`);
     }
 
+    const value = log.args.value.multipliedBy(1e-18).toNumber();
+    console.log(`Reclaimed ${value} Gems`);
     return log;
   }
 }
