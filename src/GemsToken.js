@@ -71,7 +71,7 @@ class GemsToken {
       throw new Error(`Unexpected value: ${log.args.value}`);
     }
 
-    return log;
+    return logs;
   }
 
   async transferFrom(from, to, value) {
@@ -98,7 +98,7 @@ class GemsToken {
       throw new Error(`Unexpected value: ${log.args.value}`);
     }
 
-    return log;
+    return logs;
   }
 
   async approve(address, value) {
@@ -124,7 +124,7 @@ class GemsToken {
       throw new Error(`Unexpected value: ${log.args.value}`);
     }
 
-    return log;
+    return logs;
   }
 
   async reclaimToken(address) {
@@ -145,9 +145,7 @@ class GemsToken {
       throw new Error(`Unexpected to address: ${log.args.to}`);
     }
 
-    const value = log.args.value.multipliedBy(1e-18).toNumber();
-    console.log(`Reclaimed ${value} Gems`);
-    return log;
+    return logs;
   }
 }
 
