@@ -20,15 +20,25 @@ class GemsToken {
     this.from = from;
   }
 
-  async init() {
-    const tokenContract = contract(tokenArtifacts);
-    tokenContract.setProvider(this.provider);
-    tokenContract.defaults({
-      gas: process.env.GAS_LIMIT,
-      from: this.from,
-      gasPrice: process.env.GAS_PRICE,
-    });
-    this.token = await tokenContract.at(process.env.GEMS_ADDRESS);
+  init() {
+      const tokenContract = contract(tokenArtifacts);
+      tokenContract.setProvider(this.provider);
+      tokenContract.defaults({
+        gas: process.env.GAS_LIMIT,
+        from: this.from,
+        gasPrice: process.env.GAS_PRICE,
+      });
+
+      return new Promise((rslv, rjct) => {
+        tokenContract.at(process.env.GEMS_ADDRESS)
+          .then((token) => {
+            this.token = token;
+            rslv();
+          })
+          .catch((err) => {
+            rjct(err);
+          });
+      });
   }
 
   /* Views */
