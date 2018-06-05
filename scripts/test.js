@@ -3,6 +3,7 @@ const Big = require('bignumber.js');
 const runScript = require('../src/runScript');
 
 const totalSupply = new Big('8e27');
+const balance = new Big('10000e18');
 const value = 1e9;
 
 async function assertRevert(fn) {
@@ -12,7 +13,7 @@ async function assertRevert(fn) {
   } catch (e) {
     err = e;
   }
-  assert(err.toString() === 'Error: VM Exception while processing transaction: revert');
+  assert(err.toString() === 'Error: Transaction rejected');
 }
 
 async function assertNoError(fn) {
@@ -31,22 +32,22 @@ runScript(async (token, ownerAddress, web3) => {
 
   // inital owner balance should equal total supply
   const ownerBalance = await token.balanceOf(ownerAddress);
-  assert(ownerBalance.equals(totalSupply));
+  assert(ownerBalance.eq(totalSupply.minus(balance)));
 
   // initial user a balance should equal zero
   const aBalance = await token.balanceOf(aAddress);
-  assert(aBalance.equals(0));
+  assert(aBalance.eq(0));
 
   // initial user b balance should equal zero
   const bBalance = await token.balanceOf(bAddress);
-  assert(bBalance.equals(0));
+  assert(bBalance.eq(0));
 
   // transfer from owner to user a should not throw error
   await assertNoError(() => token.transfer(aAddress, value));
 
   // user a balance should be updated correctly
   const aNewBalance = await token.balanceOf(aAddress);
-  assert(aNewBalance.equals(value));
+  assert(aNewBalance.eq(value));
 
   // transfer from a to b should fail without approval
   await assertRevert(() => token.transferFrom(aAddress, bAddress, value));
@@ -56,7 +57,7 @@ runScript(async (token, ownerAddress, web3) => {
 
   // user a allowance should reflect approval
   const aAllowance = await token.allowance(ownerAddress, aAddress);
-  assert(aAllowance.equals(value));
+  assert(aAllowance.eq(value));
 })
   .then(() => console.log('done'))
   .catch(err => console.error(err));

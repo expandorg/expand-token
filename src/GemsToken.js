@@ -1,5 +1,9 @@
 const contract = require('truffle-contract');
+const Big = require('bignumber.js');
+const Watcher = require('@xlnt/scry-one').default;
 const tokenArtifacts = require('../build/contracts/GemsToken.json');
+
+const eventAbis = tokenArtifacts.abi.filter((abi) => abi.type && abi.type === 'event');
 
 function validateAddress(address, name) {
   if (address.length !== 42 || address.slice(0, 2) !== '0x') {
@@ -18,6 +22,12 @@ class GemsToken {
     validateAddress(from, 'from');
     this.provider = provider;
     this.from = from;
+    this.watcher = new Watcher(
+      process.env.WEB3_PROVIDER,
+      eventAbis,
+      1,
+      500,
+    );
   }
 
   init() {
@@ -62,26 +72,23 @@ class GemsToken {
     validateAddress(to, 'to');
     validateValue(value);
 
-    const { logs } = await this.token.transfer(to, value);
+    const { tx, receipt } = await this.token.transfer(to, value);
+    if (receipt.status === '0x00') {
+      throw new Error('Transaction rejected');
+    }
 
-    if (logs.length !== 1) {
-      throw new Error(`Unexpected event logs: ${logs.toString()}`);
-    }
-    const log = logs[0];
-    if (log.event !== 'Transfer') {
-      throw new Error(`Unexpected event log: ${log.toString()}`);
-    }
-    if (log.args.from !== this.from.toLowerCase()) {
+    const log = await this.watcher.scry(tx, 'Transfer');
+    if (log.args.from.toLowerCase() !== this.from.toLowerCase()) {
       throw new Error(`Unexpected from address: ${log.args.from}`);
     }
-    if (log.args.to !== to.toLowerCase()) {
+    if (log.args.to.toLowerCase() !== to.toLowerCase()) {
       throw new Error(`Unexpected to address: ${log.args.to}`);
     }
-    if (!log.args.value.equals(value)) {
+    if (!new Big(log.args.value).eq(value)) {
       throw new Error(`Unexpected value: ${log.args.value}`);
     }
 
-    return logs;
+    return [log];
   }
 
   async transferFrom(from, to, value) {
@@ -89,73 +96,65 @@ class GemsToken {
     validateAddress(to, 'to');
     validateValue(value);
 
-    const { logs } = await this.token.transferFrom(from, to, value);
+    const { tx, receipt } = await this.token.transferFrom(from, to, value);
+    if (receipt.status === '0x00') {
+      throw new Error('Transaction rejected');
+    }
 
-    if (logs.length !== 1) {
-      throw new Error(`Unexpected event logs: ${logs.toString()}`);
-    }
-    const log = logs[0];
-    if (log.event !== 'Transfer') {
-      throw new Error(`Unexpected event log: ${log.toString()}`);
-    }
-    if (log.args.from !== from.toLowerCase()) {
+    const log = await this.watcher.scry(tx, 'Transfer');
+    if (log.args.from.toLowerCase() !== from.toLowerCase()) {
       throw new Error(`Unexpected from address: ${log.args.from}`);
     }
-    if (log.args.to !== to.toLowerCase()) {
+    if (log.args.to.toLowerCase() !== to.toLowerCase()) {
       throw new Error(`Unexpected to address: ${log.args.to}`);
     }
-    if (!log.args.value.equals(value)) {
+    if (!new Big(log.args.value).eq(value)) {
       throw new Error(`Unexpected value: ${log.args.value}`);
     }
 
-    return logs;
+    return [log];
   }
 
   async approve(address, value) {
     validateAddress(address, 'approve');
     validateValue(value);
 
-    const { logs } = await this.token.approve(address, value);
+    const { tx, receipt } = await this.token.approve(address, value);
+    if (receipt.status === '0x00') {
+      throw new Error('Transaction rejected');
+    }
 
-    if (logs.length !== 1) {
-      throw new Error(`Unexpected event logs: ${logs.toString()}`);
-    }
-    const log = logs[0];
-    if (log.event !== 'Approval') {
-      throw new Error(`Unexpected event log: ${log.toString()}`);
-    }
-    if (log.args.owner !== this.from.toLowerCase()) {
+    const log = await this.watcher.scry(tx, 'Approval');
+    if (log.args.owner.toLowerCase() !== this.from.toLowerCase()) {
       throw new Error(`Unexpected owner address: ${log.args.from}`);
     }
-    if (log.args.spender !== address.toLowerCase()) {
+    if (log.args.spender.toLowerCase() !== address.toLowerCase()) {
       throw new Error(`Unexpected spender address: ${log.args.spender}`);
     }
-    if (!log.args.value.equals(value)) {
+    if (!new Big(log.args.value).eq(value)) {
       throw new Error(`Unexpected value: ${log.args.value}`);
     }
 
-    return logs;
+    return [log];
   }
 
   async reclaimToken(address) {
     validateAddress(address, 'token');
 
-    const { logs } = await this.token.reclaimToken(address);
-    if (logs.length !== 1) {
-      throw new Error(`Unexpected event logs: ${logs.toString()}`);
+    const { tx, receipt } = await this.token.reclaimToken(address);
+    if (receipt.status === '0x00') {
+      throw new Error('Transaction rejected');
     }
-    const log = logs[0];
-    if (log.event !== 'Transfer') {
-      throw new Error(`Unexpected event log: ${log.toString()}`);
-    }
-    if (log.args.from !== process.env.GEMS_ADDRESS) {
+
+    const log = await this.watcher.scry(tx, 'Transfer');
+    if (log.args.from.toLowerCase() !== process.env.GEMS_ADDRESS) {
       throw new Error(`Unexpected from address: ${log.args.from}`);
     }
-    if (log.args.to !== process.env.OWNER_ADDRESS) {
+    if (log.args.to.toLowerCase() !== process.env.OWNER_ADDRESS) {
       throw new Error(`Unexpected to address: ${log.args.to}`);
     }
 
-    return logs;
+    return [log];
   }
 }
 
