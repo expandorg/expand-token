@@ -9,6 +9,7 @@ async function runScript(script) {
   const token = new GemsToken(web3.currentProvider, ownerAddress);
   await token.init();
   await script(token, ownerAddress, web3);
+  token.close();
 }
 
 module.exports = runScript;

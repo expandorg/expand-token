@@ -51,6 +51,10 @@ class GemsToken {
       });
   }
 
+  close() {
+    this.watcher.stop();
+  }
+
   /* Views */
 
   async balanceOf(address) {
