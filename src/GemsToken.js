@@ -5,6 +5,9 @@ const tokenArtifacts = require('../build/contracts/GemsToken.json');
 
 const eventAbis = tokenArtifacts.abi.filter((abi) => abi.type && abi.type === 'event');
 
+const statusError = new Error('Transaction rejected');
+statusError.name == 'StatusError';
+
 function validateAddress(address, name) {
   if (address.length !== 42 || address.slice(0, 2) !== '0x') {
     throw new Error(`Invalid ${name} address`);
@@ -78,7 +81,7 @@ class GemsToken {
 
     const { tx, receipt } = await this.token.transfer(to, value);
     if (receipt.status === '0x00') {
-      throw new Error('Transaction rejected');
+      throw statusError;
     }
 
     const log = await this.watcher.scry(tx, 'Transfer');
@@ -102,7 +105,7 @@ class GemsToken {
 
     const { tx, receipt } = await this.token.transferFrom(from, to, value);
     if (receipt.status === '0x00') {
-      throw new Error('Transaction rejected');
+      throw statusError;
     }
 
     const log = await this.watcher.scry(tx, 'Transfer');
@@ -125,7 +128,7 @@ class GemsToken {
 
     const { tx, receipt } = await this.token.approve(address, value);
     if (receipt.status === '0x00') {
-      throw new Error('Transaction rejected');
+      throw statusError;
     }
 
     const log = await this.watcher.scry(tx, 'Approval');
@@ -147,7 +150,7 @@ class GemsToken {
 
     const { tx, receipt } = await this.token.reclaimToken(address);
     if (receipt.status === '0x00') {
-      throw new Error('Transaction rejected');
+      throw statusError;
     }
 
     const log = await this.watcher.scry(tx, 'Transfer');

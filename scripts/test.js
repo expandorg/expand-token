@@ -13,7 +13,7 @@ async function assertRevert(fn) {
   } catch (e) {
     err = e;
   }
-  assert(err.toString() === 'Error: Transaction rejected');
+  assert(err.name === 'StatusError');
 }
 
 async function assertNoError(fn) {
