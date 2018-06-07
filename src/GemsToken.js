@@ -1,12 +1,9 @@
 const contract = require('truffle-contract');
 const Big = require('bignumber.js');
-const Watcher = require('@xlnt/scry-one').default;
 const tokenArtifacts = require('../build/contracts/GemsToken.json');
 
-const eventAbis = tokenArtifacts.abi.filter((abi) => abi.type && abi.type === 'event');
-
 const statusError = new Error('Transaction rejected');
-statusError.name == 'StatusError';
+statusError.name = 'StatusError';
 
 function validateAddress(address, name) {
   if (address.length !== 42 || address.slice(0, 2) !== '0x') {
@@ -21,16 +18,11 @@ function validateValue(value) {
 }
 
 class GemsToken {
-  constructor(provider, from) {
+  constructor(provider, from, watcher) {
     validateAddress(from, 'from');
     this.provider = provider;
     this.from = from;
-    this.watcher = new Watcher(
-      process.env.WEB3_PROVIDER,
-      eventAbis,
-      1,
-      500,
-    );
+    this.watcher = watcher;
   }
 
   init() {
@@ -52,10 +44,6 @@ class GemsToken {
             rjct(err);
           });
       });
-  }
-
-  close() {
-    this.watcher.stop();
   }
 
   /* Views */
@@ -165,4 +153,7 @@ class GemsToken {
   }
 }
 
-module.exports = GemsToken;
+module.exports = {
+  GemsToken,
+  events: tokenArtifacts.abi.filter((abi) => abi.type && abi.type === 'event'),
+};

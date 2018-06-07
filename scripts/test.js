@@ -26,7 +26,7 @@ async function assertNoError(fn) {
   assert(err === undefined);
 }
 
-runScript(async (token, ownerAddress, web3) => {
+runScript(async (token, ownerAddress, web3, watcher) => {
   const aAddress = web3.eth.accounts[1];
   const bAddress = web3.eth.accounts[2];
 
