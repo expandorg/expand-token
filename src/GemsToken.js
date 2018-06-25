@@ -70,7 +70,17 @@ class GemsToken {
     if (receipt.status === '0x00') {
       throw statusError;
     }
-    return tx;
+    return {
+      tx,
+      expected: {
+        name: 'Transfer',
+        args: {
+          from: this.from.toLowerCase(),
+          to: to.toLowerCase(),
+          value,
+        },
+      },
+    };
   }
 
   async transferFrom(from, to, value, options) {
@@ -82,7 +92,17 @@ class GemsToken {
     if (receipt.status === '0x00') {
       throw statusError;
     }
-    return tx;
+    return {
+      tx,
+      expected: {
+        name: 'Transfer',
+        args: {
+          from: from.toLowerCase(),
+          to: to.toLowerCase(),
+          value,
+        },
+      },
+    };
   }
 
   async approve(address, value, options) {
@@ -93,7 +113,17 @@ class GemsToken {
     if (receipt.status === '0x00') {
       throw statusError;
     }
-    return tx;
+    return {
+      tx,
+      expected: {
+        name: 'Approval',
+        args: {
+          owner: this.from.toLowerCase(),
+          spender: address.toLowerCase(),
+          value,
+        },
+      },
+    };
   }
 
   async reclaimToken(address, options) {
@@ -103,7 +133,16 @@ class GemsToken {
     if (receipt.status === '0x00') {
       throw statusError;
     }
-    return tx;
+    return {
+      tx,
+      expected: {
+        name: 'Transfer',
+        args: {
+          from: process.env.GEMS_ADDRESS,
+          to: process.env.OWNER_ADDRESS,
+        },
+      },
+    };
   }
 }
 
