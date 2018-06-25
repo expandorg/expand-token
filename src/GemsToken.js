@@ -18,11 +18,10 @@ function validateValue(value) {
 }
 
 class GemsToken {
-  constructor(provider, from, watcher) {
+  constructor(provider, from) {
     validateAddress(from, 'from');
     this.provider = provider;
     this.from = from;
-    this.watcher = watcher;
   }
 
   init() {
@@ -71,19 +70,7 @@ class GemsToken {
     if (receipt.status === '0x00') {
       throw statusError;
     }
-
-    const log = await this.watcher.scry(tx, 'Transfer');
-    if (log.args.from.toLowerCase() !== this.from.toLowerCase()) {
-      throw new Error(`Unexpected from address: ${log.args.from}`);
-    }
-    if (log.args.to.toLowerCase() !== to.toLowerCase()) {
-      throw new Error(`Unexpected to address: ${log.args.to}`);
-    }
-    if (!new Big(log.args.value).eq(value)) {
-      throw new Error(`Unexpected value: ${log.args.value}`);
-    }
-
-    return [log];
+    return tx;
   }
 
   async transferFrom(from, to, value, options) {
@@ -95,19 +82,7 @@ class GemsToken {
     if (receipt.status === '0x00') {
       throw statusError;
     }
-
-    const log = await this.watcher.scry(tx, 'Transfer');
-    if (log.args.from.toLowerCase() !== from.toLowerCase()) {
-      throw new Error(`Unexpected from address: ${log.args.from}`);
-    }
-    if (log.args.to.toLowerCase() !== to.toLowerCase()) {
-      throw new Error(`Unexpected to address: ${log.args.to}`);
-    }
-    if (!new Big(log.args.value).eq(value)) {
-      throw new Error(`Unexpected value: ${log.args.value}`);
-    }
-
-    return [log];
+    return tx;
   }
 
   async approve(address, value, options) {
@@ -118,19 +93,7 @@ class GemsToken {
     if (receipt.status === '0x00') {
       throw statusError;
     }
-
-    const log = await this.watcher.scry(tx, 'Approval');
-    if (log.args.owner.toLowerCase() !== this.from.toLowerCase()) {
-      throw new Error(`Unexpected owner address: ${log.args.from}`);
-    }
-    if (log.args.spender.toLowerCase() !== address.toLowerCase()) {
-      throw new Error(`Unexpected spender address: ${log.args.spender}`);
-    }
-    if (!new Big(log.args.value).eq(value)) {
-      throw new Error(`Unexpected value: ${log.args.value}`);
-    }
-
-    return [log];
+    return tx;
   }
 
   async reclaimToken(address, options) {
@@ -140,16 +103,7 @@ class GemsToken {
     if (receipt.status === '0x00') {
       throw statusError;
     }
-
-    const log = await this.watcher.scry(tx, 'Transfer');
-    if (log.args.from.toLowerCase() !== process.env.GEMS_ADDRESS) {
-      throw new Error(`Unexpected from address: ${log.args.from}`);
-    }
-    if (log.args.to.toLowerCase() !== process.env.OWNER_ADDRESS) {
-      throw new Error(`Unexpected to address: ${log.args.to}`);
-    }
-
-    return [log];
+    return tx;
   }
 }
 

@@ -13,7 +13,7 @@ const watcher = new Watcher(
 );
 
 async function runScript(script) {
-  const token = new GemsToken(web3.currentProvider, ownerAddress, watcher);
+  const token = new GemsToken(web3.currentProvider, ownerAddress);
   await token.init();
   await script(token, ownerAddress, web3, watcher);
   watcher.stop();
