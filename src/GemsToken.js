@@ -63,11 +63,11 @@ class GemsToken {
 
   /* Transactions */
 
-  async transfer(to, value) {
+  async transfer(to, value, options) {
     validateAddress(to, 'to');
     validateValue(value);
 
-    const { tx, receipt } = await this.token.transfer(to, value);
+    const { tx, receipt } = await this.token.transfer(to, value, options);
     if (receipt.status === '0x00') {
       throw statusError;
     }
@@ -86,12 +86,12 @@ class GemsToken {
     return [log];
   }
 
-  async transferFrom(from, to, value) {
+  async transferFrom(from, to, value, options) {
     validateAddress(from, 'from');
     validateAddress(to, 'to');
     validateValue(value);
 
-    const { tx, receipt } = await this.token.transferFrom(from, to, value);
+    const { tx, receipt } = await this.token.transferFrom(from, to, value, options);
     if (receipt.status === '0x00') {
       throw statusError;
     }
@@ -110,11 +110,11 @@ class GemsToken {
     return [log];
   }
 
-  async approve(address, value) {
+  async approve(address, value, options) {
     validateAddress(address, 'approve');
     validateValue(value);
 
-    const { tx, receipt } = await this.token.approve(address, value);
+    const { tx, receipt } = await this.token.approve(address, value, options);
     if (receipt.status === '0x00') {
       throw statusError;
     }
@@ -133,10 +133,10 @@ class GemsToken {
     return [log];
   }
 
-  async reclaimToken(address) {
+  async reclaimToken(address, options) {
     validateAddress(address, 'token');
 
-    const { tx, receipt } = await this.token.reclaimToken(address);
+    const { tx, receipt } = await this.token.reclaimToken(address, options);
     if (receipt.status === '0x00') {
       throw statusError;
     }
