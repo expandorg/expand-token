@@ -4,7 +4,7 @@ const provider = require('../src/provider');
 const { GemsToken, events } = require('../src/GemsToken');
 
 const web3 = new Web3(provider);
-const ownerAddress = process.env.ENV === 'local' ? web3.eth.accounts[0] : process.env.OWNER_ADDRESS;
+const ownerAddress = process.env.ENV === 'local' ? web3.eth.accounts[0] : process.env.GEMS_OWNER_ADDRESS;
 const watcher = new Watcher(
   process.env.WEB3_PROVIDER,
   events,

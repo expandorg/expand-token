@@ -10,9 +10,9 @@ let provider;
 if (process.env.ENV === 'local') {
   provider = new Web3.providers.HttpProvider(process.env.WEB3_PROVIDER);
 } else {
-  const keyfilePath = process.env.OWNER_KEYFILE;
+  const keyfilePath = process.env.GEMS_OWNER_KEYFILE;
   const keyfile = readFileSync(keyfilePath);
-  const wallet = fromV3(keyfile.toString(), process.env.OWNER_PASSWORD);
+  const wallet = fromV3(keyfile.toString(), process.env.GEMS_OWNER_PASSWORD);
   provider = new WalletProvider(wallet, process.env.WEB3_PROVIDER);
 }
 
