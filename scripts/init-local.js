@@ -9,6 +9,10 @@ runScript(async (token, ownerAddress, web3, watcher) => {
   const approve = 1000e18;
   const tokenAllowLog = await token.approve(vaultAddress, approve);
   console.log(tokenAllowLog);
+
+  const worker2Address = '0x60e156ec48336b69fc0628ae357f50735fd7be6e';
+  const worker2TransferLog = await token.transfer(worker2Address, deposit);
+  console.log(worker2TransferLog);
 })
   .then(() => console.log('done'))
   .catch(err => console.error(err));
