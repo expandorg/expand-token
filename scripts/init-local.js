@@ -18,31 +18,31 @@ runScript(async (token, ownerAddress, web3, watcher) => {
   const requester2Token = new GemsToken(web3.currentProvider, accounts.requester2.address);
   await requester2Token.init();
 
-  const vaultTransferLog = await token.transfer(vaultAddress, deposit);
+  const vaultTransferLog = await token.transfer(process.env.VAULT_ADDRESS, deposit);
   console.log(vaultTransferLog);
 
-  const worker1TransferLog = await token.transfer(worker1Address, deposit);
+  const worker1TransferLog = await token.transfer(accounts.worker1.address, deposit);
   console.log(worker1TransferLog);
 
-  const worker2TransferLog = await token.transfer(worker2Address, deposit);
+  const worker2TransferLog = await token.transfer(accounts.worker2.address, deposit);
   console.log(worker2TransferLog);
 
-  const requester1TransferLog = await token.transfer(requester1Address, deposit);
+  const requester1TransferLog = await token.transfer(accounts.requester1.address, deposit);
   console.log(requester1TransferLog);
 
-  const requester2TransferLog = await token.transfer(requester2Address, deposit);
+  const requester2TransferLog = await token.transfer(accounts.requester2.address, deposit);
   console.log(requester2TransferLog);
 
-  const worker1AllowLog = await worker1Token.approve(vaultAddress, approve);
+  const worker1AllowLog = await worker1Token.approve(process.env.VAULT_ADDRESS, approve);
   console.log(worker1AllowLog);
 
-  const worker2AllowLog = await worker2Token.approve(vaultAddress, approve);
+  const worker2AllowLog = await worker2Token.approve(process.env.VAULT_ADDRESS, approve);
   console.log(worker2AllowLog);
 
-  const requester1AllowLog = await requester1Token.approve(vaultAddress, approve);
+  const requester1AllowLog = await requester1Token.approve(process.env.VAULT_ADDRESS, approve);
   console.log(requester1AllowLog);
 
-  const requester2AllowLog = await requester2Token.approve(vaultAddress, approve);
+  const requester2AllowLog = await requester2Token.approve(process.env.VAULT_ADDRESS, approve);
   console.log(requester2AllowLog);
 })
   .then(() => console.log('done'))
