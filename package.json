@@ -1,13 +1,18 @@
 {
-  "name": "gems-token",
+  "name": "@gemsorg/gems-token",
   "version": "1.0.0",
-  "description": "",
+  "private": true,
+  "description": "Convenience wrapper for the Gems token Ethereum contract",
   "main": "index.js",
   "scripts": {
     "test": "node scripts/test.js"
   },
-  "author": "",
+  "author": "gems.org",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gemsorg/gems-token.git"
+  },
   "dependencies": {
     "@xlnt/scry-one": "0.0.1",
     "bignumber.js": "^6.0.0",
