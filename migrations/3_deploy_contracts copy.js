@@ -1,6 +1,6 @@
 
 const loadEnv = require('../src/loadEnv');
-const ExpandToken = artifacts.require('./ExpandToken');
+const ExpandToken = artifacts.require('./GemsToken');
 
 loadEnv();
 
