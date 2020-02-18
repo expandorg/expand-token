@@ -1,1 +1,1 @@
-module.exports = require('./src/GemsToken');
+module.exports = require('./src/ExpandToken');

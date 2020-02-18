@@ -1,5 +1,5 @@
 const contract = require('truffle-contract');
-const tokenArtifacts = require('../build/contracts/GemsToken.json');
+const tokenArtifacts = require('../build/contracts/ExpandToken.json');
 
 function validateAddress(address, name) {
   if (address.length !== 42 || address.slice(0, 2) !== '0x') {
@@ -13,7 +13,7 @@ function validateValue(value) {
   }
 }
 
-class GemsToken {
+class ExpandToken {
   constructor(provider, from) {
     validateAddress(from, 'from');
     this.provider = provider;
@@ -28,7 +28,7 @@ class GemsToken {
       from: this.from,
       gasPrice: process.env.GAS_PRICE,
     });
-    this.token = await tokenContract.at(process.env.GEMS_ADDRESS);
+    this.token = await tokenContract.at(process.env.EXPAND_ADDRESS);
   }
 
   /* Views */
@@ -138,7 +138,7 @@ class GemsToken {
     if (log.event !== 'Transfer') {
       throw new Error(`Unexpected event log: ${log.toString()}`);
     }
-    if (log.args.from !== process.env.GEMS_ADDRESS) {
+    if (log.args.from !== process.env.EXPAND_ADDRESS) {
       throw new Error(`Unexpected from address: ${log.args.from}`);
     }
     if (log.args.to !== process.env.OWNER_ADDRESS) {
@@ -149,4 +149,4 @@ class GemsToken {
   }
 }
 
-module.exports = GemsToken;
+module.exports = ExpandToken;

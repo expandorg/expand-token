@@ -1,6 +1,6 @@
-# Gems Token
+# Expand Token
 
-Contains the GemsToken contract and convenience wrappers for executing views and transactions.
+Contains the ExpandToken contract and convenience wrappers for executing views and transactions.
 
 ## Environments
 
